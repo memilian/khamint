@@ -1,0 +1,103 @@
+{
+	"files": [
+		{
+			"name": "segoeUISymbol",
+			"type": "font",
+			"files": [
+				"segoeUISymbol.ttf"
+			]
+		},
+		{
+			"name": "bg960",
+			"type": "image",
+			"original_width": 960,
+			"original_height": 640,
+			"files": [
+				"bg960.png"
+			]
+		},
+		{
+			"name": "image0",
+			"type": "image",
+			"original_width": 1024,
+			"original_height": 1024,
+			"files": [
+				"image0.png"
+			]
+		},
+		{
+			"name": "mint_box",
+			"type": "image",
+			"original_width": 128,
+			"original_height": 128,
+			"files": [
+				"mint.box.png"
+			]
+		},
+		{
+			"name": "transparency",
+			"type": "image",
+			"original_width": 64,
+			"original_height": 64,
+			"files": [
+				"transparency.png"
+			]
+		},
+		{
+			"name": "painter_colored_frag",
+			"files": [
+				"painter-colored.frag.essl"
+			],
+			"type": "shader"
+		},
+		{
+			"name": "painter_colored_vert",
+			"files": [
+				"painter-colored.vert.essl"
+			],
+			"type": "shader"
+		},
+		{
+			"name": "painter_image_frag",
+			"files": [
+				"painter-image.frag.essl"
+			],
+			"type": "shader"
+		},
+		{
+			"name": "painter_image_vert",
+			"files": [
+				"painter-image.vert.essl"
+			],
+			"type": "shader"
+		},
+		{
+			"name": "painter_text_frag",
+			"files": [
+				"painter-text.frag.essl"
+			],
+			"type": "shader"
+		},
+		{
+			"name": "painter_text_vert",
+			"files": [
+				"painter-text.vert.essl"
+			],
+			"type": "shader"
+		},
+		{
+			"name": "painter_video_frag",
+			"files": [
+				"painter-video.frag.essl"
+			],
+			"type": "shader"
+		},
+		{
+			"name": "painter_video_vert",
+			"files": [
+				"painter-video.vert.essl"
+			],
+			"type": "shader"
+		}
+	]
+}

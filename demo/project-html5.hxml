@@ -1,0 +1,15 @@
+-cp /home/memilian/dev/projets/KhaMint/Kha/Sources
+-cp /home/memilian/dev/projets/KhaMint/Kha/Backends/HTML5
+-cp ../tests/Sources
+-cp ../Sources
+-cp /home/memilian/dev/lib/haxelib/mint/git
+-D sys_html5
+-D sys_g1
+-D sys_g2
+-D sys_g3
+-D sys_g4
+-D sys_a1
+-D sys_a2
+-D kha
+-js html5/kha.js
+-main Main
