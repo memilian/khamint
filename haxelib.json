@@ -1,0 +1,9 @@
+{
+	"name": "khamint",
+	"url": "https://github.com/snowkit/differ",
+	"license": "MIT",
+	"tags": ["mint", "kha", "gui"],
+	"description": "Kha backend for mint",
+	"classPath": "Sources",
+	"dependencies": {"mint": "*"}
+}
