@@ -37,7 +37,6 @@ class Triangle extends Visual{
         g.pushOpacity(myOpacity);
         g.color = myColor;
         g.pushRotation(myRotation, x+center.x, y+center.y);
-        g.setBlendingMode(BlendingOperation.SourceAlpha, BlendingOperation.InverseSourceAlpha);
         g.fillTriangle(x+p0.x, y+p0.y, x+p1.x, y+p1.y, x+p2.x, y+p2.y);
         g.popOpacity();
         g.popTransformation();

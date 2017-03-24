@@ -18,7 +18,6 @@ import mint.layout.margins.Margins;
 import mint.render.kha.KhaMintRendering;
 import kha.Font;
 
-
 class KhaMint {
 
 	//	public static var disp : Text;
@@ -51,11 +50,11 @@ class KhaMint {
 
 		kmAdapter = new KhaMintAdapter();
 
-		font = Assets.fonts.segoeUISymbol;
+		font = Assets.fonts.cnr;
 
 		rendering = new KhaMintRendering({
 			font:font
-		}, System.pixelWidth, System.pixelHeight);
+		}, System.windowWidth(), System.windowHeight());
 
 		layout = new Margins();
 
@@ -63,7 +62,7 @@ class KhaMint {
 			name:'canvas',
 			rendering: rendering,
 			renderable:true,
-			x: 0, y:0, w: System.pixelWidth, h: System.pixelHeight
+			x: 0, y:0, w: System.windowWidth(), h: System.windowHeight()
 		});
 
 		focus = new Focus(canvas);

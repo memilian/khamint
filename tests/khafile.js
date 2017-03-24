@@ -5,4 +5,4 @@ project.addSources('Sources');
 project.addSources('../Sources');
 project.addLibrary('mint');
 
-return project;
+resolve(project);

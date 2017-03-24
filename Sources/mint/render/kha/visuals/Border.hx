@@ -53,7 +53,6 @@ class Border extends Visual{
 		}
 		g.pushOpacity(myOpacity);
 		g.color = myColor;
-		g.setBlendingMode(BlendingOperation.SourceAlpha, BlendingOperation.InverseSourceAlpha);
 		g.drawScaledImage(Visual.baseImage,rx,ry,rw,borderLength);
 		g.drawScaledImage(Visual.baseImage,rx,ry+rh,rw,borderLength);
 		g.drawScaledImage(Visual.baseImage,rx,ry+borderLength,borderLength,rh);

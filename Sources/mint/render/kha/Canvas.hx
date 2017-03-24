@@ -35,7 +35,6 @@ class Canvas extends KhaRenderer{
 	override function onrender(){
 		if(!canvas.visible) return;
 		var g : Graphics = khaRendering.frame.g2;
-		g.setBlendingMode(BlendingOperation.SourceAlpha, BlendingOperation.InverseSourceAlpha);
 		visual.draw(g);
 		g.flush();
 	}

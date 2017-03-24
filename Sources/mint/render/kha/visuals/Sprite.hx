@@ -31,7 +31,6 @@ class Sprite extends Visual{
         if(!myVisibility) return;
         g.pushOpacity(myOpacity);
         g.color = myColor;
-        g.setBlendingMode(BlendingOperation.SourceAlpha, BlendingOperation.InverseSourceAlpha);
         if(doClip){
             g.scissor(Std.int(cx),Std.int(cy),Std.int(cw),Std.int(ch));
         }else{

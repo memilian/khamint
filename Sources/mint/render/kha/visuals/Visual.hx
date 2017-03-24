@@ -121,7 +121,6 @@ class Visual {
 
 		g.pushOpacity(myOpacity);
 		g.color = myColor;
-		g.setBlendingMode(BlendingOperation.SourceAlpha, BlendingOperation.InverseSourceAlpha);
 		//need gl.enable(SCISSOR_TEST);
 		//g.setScissor(Std.int(cx),Std.int(cy),Std.int(cw),Std.int(ch));
 		g.drawScaledImage(baseImage,rx,ry,rw,rh);

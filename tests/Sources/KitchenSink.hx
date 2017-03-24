@@ -408,7 +408,7 @@ class KitchenSink{
         g.begin(true, Color.fromBytes(255,255,255,255));
 
         g.drawImage(Assets.images.bg960,0,0);
-        g.setBlendingMode(BlendingOperation.SourceAlpha , BlendingOperation.InverseSourceAlpha);
+        //g.setBlendingMode(BlendingOperation.SourceAlpha , BlendingOperation.InverseSourceAlpha);
         canvas.render();
         g.flush();
         g.end();
@@ -423,12 +423,12 @@ class KitchenSink{
         g.fontSize = 15;
         var i = 0;
         for(line in KhaMint.canvasDebug.split('\n'))
-            g.drawString(line,System.pixelWidth - font.width(15,line) -15,25*++i);
+            g.drawString(line,System.windowWidth() - font.width(15,line) -15,25*++i);
 
         var now = Scheduler.time();
         var fps = 'fps : ${Math.round(1.0/(now-lastTime))}';
 
-        g.drawString(fps,System.pixelWidth - font.width(15,fps) -15,5);
+        g.drawString(fps,System.windowWidth() - font.width(15,fps) -15,5);
 
         lastTime = now;
 
