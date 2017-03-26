@@ -5,8 +5,6 @@ See [the demo here](http://memilian.github.io/khamint/demo/)
 
 Currently only works on html5 target
 
-Known issue :
-The content of a Scroll element is rendered before the scrollbar and may hide it. Need to implement the sorting of elements by depth.
 
 minimal setup :
 ```haxe
