@@ -5,22 +5,16 @@ import kha.Assets;
 import mint.focus.Focus;
 import mint.Canvas;
 import kha.Framebuffer;
-import kha.Color;
-import kha.Scheduler;
-import haxe.Timer;
 import kha.input.Keyboard;
 import mint.render.kha.KhaMintAdapter;
 import kha.input.Mouse;
 import kha.Key;
-import kha.FontStyle;
-import haxe.PosInfos;
 import mint.layout.margins.Margins;
 import mint.render.kha.KhaMintRendering;
 import kha.Font;
 
 class KhaMint {
 
-	//	public static var disp : Text;
 	public static var canvas: Canvas;
 	public static var rendering: KhaMintRendering;
 	public static var kmAdapter : KhaMintAdapter;
@@ -50,7 +44,7 @@ class KhaMint {
 
 		kmAdapter = new KhaMintAdapter();
 
-		font = Assets.fonts.cnr;
+		font = Assets.fonts.caviar;
 
 		rendering = new KhaMintRendering({
 			font:font
