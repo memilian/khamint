@@ -6,13 +6,9 @@ import kha.Assets;
 import kha.Font;
 import mint.render.kha.KhaMintRendering;
 import kha.graphics2.Graphics;
-import kha.graphics4.BlendingOperation;
-import haxe.Timer;
 import kha.Framebuffer;
 import kha.Scheduler;
-import kha.Key;
 import kha.Color;
-import mint.types.*;
 import mint.Control;
 import mint.types.Types;
 
@@ -71,24 +67,25 @@ class KitchenSink{
         window1 = new mint.Window({
             parent: canvas,
             name: 'window1',
-            title: 'window',
+            title: 'inventory',
+            title_height: 48,
+            text_size : 20,
             options: {
                 color:Color.fromValue(0xff121212),
                 color_titlebar:Color.fromValue(0xff191919),
                 label: { color:Color.fromValue(0xff06b4fb)},
                 close_button: { color:Color.fromValue(0xff06b4fb) }
             },
-            x:160, y:10, w:256, h: 400,
-            w_min: 256, h_min:256,
+            x:160, y:10, w:296, h: 400,
+            w_min: 296, h_min:256,
             collapsible:true,
-            text_size: 16
         });
 
         var _list = new mint.List({
             parent: window1,
             name: 'list1',
             options: { view: { color:Color.fromValue(0xff19191c) } },
-            x: 4, y: 28, w: 248, h: 400-28-4
+            x: 4, y: 54, w: 248, h: 400-54-4
         });
 
         KhaMint.layout.margin(_list, right, fixed, 4);
@@ -117,21 +114,20 @@ class KitchenSink{
 
             var _title = new mint.Label({
                 parent: _panel, name: 'label_${idx}',
-                mouse_input:true, x:96, y:8, w:148, h:18, text_size: 18,
+                mouse_input:true, x:96, y:8, w:148, h:18, text_size: 16,
                 align: TextAlign.left, align_vertical: TextAlign.top,
                 text: titles[idx]
             });
 
             var _desc = new mint.Label({
                 parent: _panel, name: 'desc_${idx}',
-                x:96, y:30, w:132, h:18, text_size: 15,
+                x:96, y:30, w:132, h:18, text_size: 12,
                 align: TextAlign.left, align_vertical: TextAlign.top, bounds_wrap: true,
                 text: desc[idx],
             });
 
             KhaMint.layout.margin(_title, right, fixed, 8);
             KhaMint.layout.margin(_desc, right, fixed, 8);
-            KhaMint.layout.margin(_desc, bottom, fixed, 8);
 
             return _panel;
 
@@ -150,7 +146,7 @@ class KitchenSink{
         var _window = new mint.Window({
             parent: canvas, name: 'window2', title: 'window',
             visible: false, closable: false, collapsible: true,
-            x:500, y:10, w:256, h: 131,
+            x:500, y:10, w:256, h: 231,
             h_max: 131, h_min: 131, w_min: 131,
             text_size: 16
 
@@ -160,6 +156,32 @@ class KitchenSink{
             parent: canvas, name: 'image2', x:0, y:400, w:32, h: 32,
             path: 'transparency'
         });
+
+
+        text1 = new mint.TextEdit({
+            parent: _window, name: 'textedit1', text: 'snõwkit / mínt', renderable: true,
+            x: 10, y:32, w: 236, h: 22
+        });
+
+        text1.onchange.listen(function(text:String, display_text:String, from_typing:Bool){
+            trace(text);
+        });
+
+        var numbers = new EReg('^[0-9]+[.]?[0-9]{0,2}$','gi');
+        var _text2 = new mint.TextEdit({
+            parent: _window, name: 'textnumbersonly', text: '314.29',
+            x: 10, y:64, w: 236, h: 22,
+            filter: function(char,future,prev){
+                return numbers.match(future);
+            },
+            options: {
+                color: Color.fromFloats(0.96,0.96,0.96),
+                color_hover: Color.White,
+                color_cursor: Color.fromValue(0xfff6007b),
+                label:{ color: Color.fromValue(0xfff6007b) }
+            }
+        });
+
 
         var _platform = new mint.Dropdown({
             parent: _window,
@@ -185,36 +207,12 @@ class KitchenSink{
 
         _platform.onselect.listen(function(idx,_,_){ _platform.label.text = plist[idx]; });
 
-        text1 = new mint.TextEdit({
-            parent: _window, name: 'textedit1', text: 'snõwkit / mínt', renderable: true,
-            x: 10, y:32, w: 256-10-10, h: 22
-        });
-
-        text1.onchange.listen(function(text:String, display_text:String, from_typing:Bool){
-            trace(text);
-        });
-
-        var numbers = new EReg('^[0-9]+[.]?[0-9]{0,2}$','gi');
-        var _text2 = new mint.TextEdit({
-            parent: _window, name: 'textnumbersonly', text: '314.29',
-            x: 10, y:32+22+10, w: 256-10-10, h: 22,
-            filter: function(char,future,prev){
-                return numbers.match(future);
-            },
-            options: {
-                color: Color.fromFloats(0.96,0.96,0.96),
-                color_hover: Color.White,
-                color_cursor: Color.fromValue(0xfff6007b),
-                label:{ color: Color.fromValue(0xfff6007b) }
-            }
-        });
-
         KhaMint.layout.anchor(_anchored, _window, left, right);
         KhaMint.layout.anchor(_anchored, _window, top, top);
 
-        KhaMint.layout.margin(_platform, right, fixed, 10);
         KhaMint.layout.margin(text1, right, fixed, 10);
         KhaMint.layout.margin(_text2, right, fixed, 10);
+        KhaMint.layout.margin(_platform, right, fixed, 10);
 
         kha.Scheduler.addTimeTask(function(){ _window.visible = true; }, 1);
 
@@ -270,16 +268,23 @@ class KitchenSink{
 
     function create_basics() {
 
-        new mint.Label({
-            parent: canvas,
-            name: 'labelmain',
-            x:10, y:10, w:100, h:32,
-            text: 'hello mint',
-            align:left,
-            text_size: 15,
-            onclick: function(e,c) {trace('hello mint! ${Scheduler.time()}' );}
+        var _panel = new mint.Panel({
+                    parent: canvas,
+                    name: 'label_panel',
+                    x:5, y:5, w:100, h:42,
+                    mouse_input: false, //this is to test that mouse events land in the children when the parent has no mouse input
         });
 
+        new mint.Label({
+            parent: _panel,
+            name: 'labelmain',
+            x:0, y:0, w:100, h:42,
+            text: 'mint label',
+            align:center,
+            text_size: 14,
+            onclick: function(e,c) {trace('hello mint! ${Scheduler.time()}' );}
+        });
+        
         check = new mint.Checkbox({
             parent: canvas,
             name: 'check1',
@@ -316,12 +321,12 @@ class KitchenSink{
             });
 
             var _l = new mint.Label({
-                parent:_s, text_size:16, x:0, y:0, w:_s.w, h:_s.h,
+                parent:_s, text_size:12, x:0, y:0, w:_s.w, h:_s.h,
                 align: TextAlign.center, align_vertical: TextAlign.center,
                 name : _s.name+'.label', text: '${_s.value}'
             });
 
-            _s.onchange.listen(function(_val,_) { _l.text = '$_val'; });
+            _s.onchange.listen(function(_val,_) { _l.text = '${Math.floor(_val*1000)/1000}'; });
 
         } //make_slider
 
@@ -403,13 +408,11 @@ class KitchenSink{
     public function render(frame : Framebuffer) {
 
         var g : Graphics = frame.g2;
-        rendering.frame = frame;
 
         g.begin(true, Color.fromBytes(255,255,255,255));
 
         g.drawImage(Assets.images.bg960,0,0);
-        //g.setBlendingMode(BlendingOperation.SourceAlpha , BlendingOperation.InverseSourceAlpha);
-        canvas.render();
+        rendering.renderManager.render(g);
         g.flush();
         g.end();
         g.begin(false);

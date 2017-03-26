@@ -2,12 +2,8 @@ package mint.render.kha;
 
 import mint.render.kha.visuals.Border;
 import mint.render.kha.visuals.Visual;
-import kha.graphics2.Graphics;
-import kha.graphics4.BlendingOperation;
 import kha.Color;
-import kha.Image;
 import mint.core.Macros.*;
-import mint.types.Types;
 
 
 private typedef KhaMintDropdownOptions = {
@@ -15,7 +11,7 @@ private typedef KhaMintDropdownOptions = {
 	var color_border : Null<Color>;
 }
 
-class Dropdown extends KhaRenderer{
+class Dropdown extends KhaRender{
 
 	public var dropdown : mint.Dropdown;
 
@@ -35,18 +31,20 @@ class Dropdown extends KhaRenderer{
 		color = def(opt.color, Color.fromValue(0xff373737));
 		color_border = def(opt.color_border, Color.fromValue(0xff121212));
 
-		border = cast new Border(control.x-1, control.y-1, control.w+2, control.h+2,1)
+		border = cast new Border(this.khaRendering.renderManager, control.x-1, control.y-1, control.w+2, control.h+2,1)
 				.color(color_border);
-		visual = new Visual(control.x, control.y, control.w, control.h)
+		visual = new Visual(this.khaRendering.renderManager, control.x, control.y, control.w, control.h)
 				.color(color);
 	}
 
-	override function onrender(){
-		if(!control.visible) return;
-		var g : Graphics = khaRendering.frame.g2;
-		visual.draw(g);
-		border.draw(g);
-		g.flush();
+	override function onvisible(visible : Bool){
+		visual.visible(visible);
+		border.visible(visible);
+	}
+
+	override function ondepth(d : Float){
+		visual.depth = d;
+		border.depth = d;
 	}
 
 	override function onbounds(){

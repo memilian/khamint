@@ -3,12 +3,9 @@ package mint.render.kha;
 import kha.Assets;
 import kha.math.Vector4;
 import mint.render.kha.visuals.Sprite;
-import kha.graphics2.Graphics;
-import kha.graphics4.BlendingOperation;
 import kha.Color;
 import kha.Image;
 import mint.core.Macros.*;
-import mint.types.Types;
 
 private typedef KhaMintImageOptions = {
 	@:optional var uv: Vector4;
@@ -17,7 +14,7 @@ private typedef KhaMintImageOptions = {
 	@:optional var sizing: String; //:todo: type
 }
 
-class Image extends KhaRenderer{
+class Image extends KhaRender{
 
 	public var imageCtrl : mint.Image;
 	public var visual : Sprite;
@@ -40,7 +37,7 @@ class Image extends KhaRenderer{
 
 		var texture : kha.Image = null;
 
-		visual = new Sprite(control.x, control.y, control.w, control.h);
+		visual = new Sprite(khaRendering.renderManager, control.x, control.y, control.w * ratioW, control.h * ratioH);
 
 		var ontextureloaded = function(image){
 			texture = image;
@@ -63,9 +60,15 @@ class Image extends KhaRenderer{
 				}
 			}
 
-			visual = cast new Sprite(control.x, control.y, control.w * ratioW, control.h * ratioH)
+			var newVisual = new Sprite(this.khaRendering.renderManager, control.x, control.y, control.w * ratioW, control.h * ratioH)
 			.texture(texture)
+			.visible(visual.isVisible())
 			.color(color);
+			newVisual.depth = visual.depth;
+			var tmp = visual;
+			visual = cast newVisual;
+			tmp.ondestroy();
+
 
 			if(opt.uv != null)
 				visual.setUv(opt.uv);
@@ -80,23 +83,14 @@ class Image extends KhaRenderer{
 			Assets.loadImage(resourceName, ontextureloaded);
 		else
 			Assets.loadImageFromPath(resourceName,true, ontextureloaded);
-		/*if(Loader.the.isImageAvailable(resourceName)){
-			texture = Loader.the.getImage(resourceName);
-		}else if(opt.image != null){
-			texture = opt.image;
-		}else{
-			trace("No image provided");
-		}
-		*/
-
-
 	}
 
-	override function onrender(){
-		if(!control.visible || !textureLoaded) return;
-		var g : Graphics = khaRendering.frame.g2;
-		visual.draw(g);
-		g.flush();
+	override function ondepth(d : Float){
+		visual.depth = d;
+	}
+
+	override function onvisible(visible : Bool){
+		visual.visible(visible);
 	}
 
 	override function onclip(disable : Bool, x : Float, y : Float, w : Float, h : Float){

@@ -16,11 +16,12 @@ class Text extends Visual{
 	var myAlignementV : TextAlign = TextAlign.center;
 	var myFont : Font;
 	var fontSize : Int;
+	var doWrap = false;
 
 	var viewportHeight : Float;
 
-	public function new(x : Float, y : Float, width : Float, height : Float, viewportHeight : Float) {
-		super(x,y,width,height);
+	public function new(manager : KhaMintRenderManager, x : Float, y : Float, width : Float, height : Float, viewportHeight : Float) {
+		super(manager, x,y,width,height);
 		this.viewportHeight = viewportHeight;
 	}
 
@@ -41,44 +42,39 @@ class Text extends Visual{
 		lines = new Array<String>();
 
 		var strLen = myFont.width(fontSize, myText);
-
-		if(strLen > rw && myFont.width(fontSize, 'a') < rw){
-			var len = 0.0;
-			var currentLine = "";
-			for(i in 0...myText.length){
-				var c = myText.charAt(i);
-				len += myFont.width(fontSize, c);
-				if(len < rw){
-					currentLine+=c;
-				}else{
+		if(!doWrap){
+			lines = myText.split('\n');
+		}else{
+			if(strLen > rw && myFont.width(fontSize, 'a') < rw){
+				var len = 0.0;
+				var currentLine = "";
+				for(i in 0...myText.length){
+					var c = myText.charAt(i);
+					len += myFont.width(fontSize, c);
+					if(len < rw){
+						currentLine+=c;
+					}else{
+						lines.push(currentLine);
+						currentLine = c;
+						len = myFont.width(fontSize, c);
+					}
+				}
+				if(currentLine.length>0)
 					lines.push(currentLine);
-					currentLine = c;
-					len = myFont.width(fontSize, c);
-				}
+			}else {
+				lines.push(myText);
 			}
-			if(currentLine.length>0)
-				lines.push(currentLine);
-
-		}else {
-			lines.push(myText);
 		}
-/*
-		var newMaxLineLength = 0;
-		var newLineCount = 0;
-		var longestLine = "";
-		if(lines != null){
-			newLineCount = lines.length;
-			for(line in lines){
-				if(line.length > newMaxLineLength){
-					newMaxLineLength = line.length;
-					longestLine = line;
-				}
-			}
-		}*/
 	}
 
 	public function text(text : String) : Text{
 		this.myText = text;
+		checkLength();
+		return this;
+	}
+
+	public function wrap(doWrap : Bool) : Text{
+		this.doWrap = doWrap;
 		checkLength();
 		return this;
 	}

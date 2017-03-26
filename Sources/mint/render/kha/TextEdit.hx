@@ -3,12 +3,8 @@ package mint.render.kha;
 import mint.render.kha.visuals.Border;
 import kha.Scheduler;
 import mint.render.kha.visuals.Visual;
-import kha.graphics2.Graphics;
-import kha.graphics4.BlendingOperation;
 import kha.Color;
-import kha.Image;
 import mint.core.Macros.*;
-import mint.types.Types;
 
 private typedef KhaMintTextEditOptions = {
 	var color: Color;
@@ -17,7 +13,7 @@ private typedef KhaMintTextEditOptions = {
     @:optional var cursor_blink_rate: Float;
 }
 
-class TextEdit extends KhaRenderer{
+class TextEdit extends KhaRender{
 
 	public var textedit : mint.TextEdit;
 	public var visual : Visual;
@@ -42,39 +38,46 @@ class TextEdit extends KhaRenderer{
 		colorCursor = def(opt.color_cursor, Color.fromValue(0xff9dca63));
         cursorBlinkRate = def(opt.cursor_blink_rate, 0.5);
 
-		visual = new Visual(control.x, control.y, control.w, control.h)
+		visual = new Visual(this.khaRendering.renderManager, control.x, control.y, control.w, control.h)
 					.color(color);
-		cursor = new Visual(0,0,0,0)
+		cursor = new Visual(this.khaRendering.renderManager, 0,0,0,0)
 					.color(colorCursor)
 					.visible(false);
-        border = cast new Border(textedit.x,textedit.y, textedit.w, textedit.h, 1)
+        border = cast new Border(this.khaRendering.renderManager, textedit.x,textedit.y, textedit.w, textedit.h, 1)
                     .color(colorCursor);
 
-		textedit.onmouseenter.listen(function(e,c){
-			visual.color(colorHover);
-		});
-
-		textedit.onmouseleave.listen(function(c,e){
-			visual.color(color);
-		});
-
-        textedit.onfocused.listen(function(state:Bool) {
-            if(state) startCursor(); else stopCursor();
-        });
-
-        textedit.onchangeindex.listen(function(index : Int){
-            updateCursor();
-        });
+		textedit.onmouseenter.listen(onmouseenter);
+		textedit.onmouseleave.listen(onmouseleave);
+        textedit.onfocused.listen(onfocused);
+        textedit.onchangeindex.listen(onchangeindex);
+	}
+	
+	function onchangeindex(index : Int){
+		updateCursor();
 	}
 
-	public override function onrender() {
-		if(!control.visible) return;
-		var g : Graphics = khaRendering.frame.g2;
-		visual.draw(g);
-        if(textedit.isfocused)
-            border.draw(g);
-        cursor.draw(g);
-		g.flush();
+	function onfocused(state : Bool){
+		if(state){
+			startCursor();
+			border.visible(true);
+		} else {
+			stopCursor();
+			border.visible(false);
+		}
+	}
+
+	function onmouseleave(event, control){
+		visual.color(color);
+	}
+
+	function onmouseenter(event, control){
+		visual.color(colorHover);
+	}
+
+	override function ondepth(d : Float){
+		visual.depth = d;
+		border.depth = d + 0.01;
+		cursor.depth = d + 0.01;
 	}
 
 	var blinkTaskId : Int = -1;
@@ -101,30 +104,29 @@ class TextEdit extends KhaRenderer{
 		var fSize = label.fontSize;
 
 		var text = textedit.before_display(textedit.index);
-		var tw = label.font.width(fSize, textedit.edit);
-        var twh = tw/2;
-        var w = label.font.width(fSize, text);
-
-        var th = label.font.height(fSize);
-        var thh = th/2;
+		var w = label.font.width(fSize, text);
 
         var x = w;
         var y = 0.0;
 
         x+= textedit.label.x;
-        y+= textedit.label.y+2;
+        y+= textedit.label.y + 2;
         cursor.pos(x,y);
         cursor.size(1,textedit.label.h -8);
 	}
 
 	override function ondestroy(){
 		stopCursor();
-
+		textedit.onfocused.remove(onfocused);
+		textedit.onmouseenter.remove(onmouseenter);
+		textedit.onmouseleave.remove(onmouseleave);
+		textedit.onchangeindex.remove(onchangeindex);
 		super.ondestroy();
 	}
 
 	override function onvisible(visible : Bool){
 		visual.visible(visible);
+		border.visible(visible);
 		if(!visible){
 			stopCursor();
 		}else if(visible && textedit.isfocused){

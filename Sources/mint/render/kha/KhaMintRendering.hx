@@ -1,6 +1,5 @@
 package mint.render.kha;
 
-import kha.Framebuffer;
 import kha.Font;
 
 typedef KhaMintRenderOptions = {
@@ -9,17 +8,19 @@ typedef KhaMintRenderOptions = {
 
 class KhaMintRendering extends Rendering{
 
-	public var frame : Framebuffer;
 	public var font : Font;
 	public var viewportWidth : Int;
 	public var viewportHeight : Int;
-
+	public var renderManager : KhaMintRenderManager;
 
 	public function new(options : KhaMintRenderOptions, viewportWidth : Int, viewportHeight : Int) {
 		super();
-		font = options.font;
+
+		this.font = options.font;
 		this.viewportWidth = viewportWidth;
 		this.viewportHeight = viewportHeight;
+		this.renderManager = new KhaMintRenderManager();
+
 	}
 
 	override public function get<T:Control, T1>( type:Class<T>, control:T ) : T1 {
