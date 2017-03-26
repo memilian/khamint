@@ -1,19 +1,14 @@
 package mint.render.kha;
 
 import mint.render.kha.visuals.Visual;
-import kha.Scaler.TargetRectangle;
-import kha.graphics2.Graphics;
-import kha.graphics4.BlendingOperation;
 import kha.Color;
-import kha.Image;
 import mint.core.Macros.*;
-import mint.types.Types;
 
 private typedef KhaMintPanelOptions = {
 	var color: Null<Color>;
 }
 
-class Panel extends KhaRenderer{
+class Panel extends KhaRender{
 
 	public var panel : mint.Panel;
 	public var color : Color;
@@ -27,15 +22,16 @@ class Panel extends KhaRenderer{
 		var opt: KhaMintPanelOptions = panel.options.options;
 
 		color = def(opt.color, Color.fromValue(0xff242424));
-		visual = new Visual(control.x, control.y, control.w, control.h).color(color);
+		visual = new Visual(this.khaRendering.renderManager, control.x, control.y, control.w, control.h).color(color);
 	}
 
-	override function onrender(){
-		if(!panel.visible) return;
-		var g : Graphics = khaRendering.frame.g2;
-		visual.draw(g);
+	override function ondepth(d : Float){
+		visual.depth = d;
 	}
-
+	
+	override function onvisible(visible : Bool){
+		visual.visible(visible);
+	}
 
 	override function onbounds(){
 		visual.size(control.w,control.h).pos(control.x,control.y);

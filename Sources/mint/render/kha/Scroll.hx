@@ -1,19 +1,15 @@
 package mint.render.kha;
 
 import mint.render.kha.visuals.Visual;
-import kha.graphics2.Graphics;
-import kha.graphics4.BlendingOperation;
 import kha.Color;
-import kha.Image;
 import mint.core.Macros.*;
-import mint.types.Types;
 
 private typedef KhaMintScrollOptions = {
 	var color: Null<Color>;
 	var color_handles: Null<Color>;
 }
 
-class Scroll extends KhaRenderer{
+class Scroll extends KhaRender{
 
 
 	public var scroll : mint.Scroll;
@@ -34,22 +30,30 @@ class Scroll extends KhaRenderer{
 		color = def(_opt.color, Color.fromValue(0xff343434));
 		color_handles = def(_opt.color_handles, Color.fromValue(0xff9dca63));
 
-		visual = new Visual(control.x,control.y,control.w,control.h).color(color);
-		scrollh = new Visual(scroll.scrollh.x, scroll.scrollh.y, scroll.scrollh.w, scroll.scrollh.h)
+		visual = new Visual(this.khaRendering.renderManager, control.x,control.y,control.w,control.h).color(color);
+		scrollh = new Visual(this.khaRendering.renderManager, scroll.scrollh.x, scroll.scrollh.y, scroll.scrollh.w, scroll.scrollh.h)
 			.color(color_handles);
-		scrollv = new Visual(scroll.scrollv.x, scroll.scrollv.y, scroll.scrollv.w, scroll.scrollv.h)
+		scrollv = new Visual(this.khaRendering.renderManager, scroll.scrollv.x, scroll.scrollv.y, scroll.scrollv.w, scroll.scrollv.h)
 			.color(color_handles);
 
 		scroll.onchange.listen(onchange);
 		scroll.onhandlevis.listen(onhandlevis);
+		scroll.scrollh.ondepth.listen(function(d){
+			scrollh.depth = d;
+		});
+		scroll.scrollv.ondepth.listen(function(d){
+			scrollv.depth = d;
+		});
+	}
+	
+	override function onvisible(visible : Bool){
+		visual.visible(visible);
+		scrollh.visible(visible);
+		scrollv.visible(visible);
 	}
 
-	override function onrender(){
-		if(!control.visible) return;
-		var g : Graphics = khaRendering.frame.g2;
-		visual.draw(g);
-		scrollh.draw(g);
-		scrollv.draw(g);
+	override function ondepth(d : Float){
+		visual.depth = d;
 	}
 
 	override function ondestroy(){

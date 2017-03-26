@@ -1,19 +1,15 @@
 package mint.render.kha;
 
 import mint.render.kha.visuals.Visual;
-import kha.graphics2.Graphics;
-import kha.graphics4.BlendingOperation;
 import kha.Color;
-import kha.Image;
 import mint.core.Macros.*;
-import mint.types.Types;
 
 private typedef KhaMintSliderOptions = {
 	var color: Null<Color>;
 	var color_bar: Null<Color>;
 }
 
-class Slider extends KhaRenderer{
+class Slider extends KhaRender{
 
 	var slider: mint.Slider;
 
@@ -33,19 +29,22 @@ class Slider extends KhaRenderer{
 		color = def(opt.color, Color.fromValue(0xff313139));
 		color_bar = def(opt.color_bar, Color.fromValue(0xff9dca63));
 
-		visual = new Visual(control.x, control.y, control.w, control.h)
+		visual = new Visual(this.khaRendering.renderManager, control.x, control.y, control.w, control.h)
 					.color(color);
-		bar = new Visual(control.x+slider.bar_x, control.y+slider.bar_y, slider.bar_w, slider.bar_h)
+		bar = new Visual(this.khaRendering.renderManager, control.x+slider.bar_x, control.y+slider.bar_y, slider.bar_w, slider.bar_h)
 					.color(color_bar);
 
 		slider.onchange.listen(onchange);
 	}
 
-	override function onrender(){
-		if(!slider.visible) return;
-		var g : Graphics = khaRendering.frame.g2;
-		visual.draw(g);
-		bar.draw(g);
+	override function ondepth(d : Float){
+		visual.depth = d;
+		bar.depth = d + 0.0001;
+	}
+
+	override function onvisible(visible : Bool){
+		visual.visible(visible);
+		bar.visible(visible);
 	}
 
 	override function ondestroy(){

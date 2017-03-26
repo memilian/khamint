@@ -1,12 +1,8 @@
 package mint.render.kha;
 
 import mint.render.kha.visuals.Visual;
-import kha.graphics2.Graphics;
-import kha.graphics4.BlendingOperation;
 import kha.Color;
-import kha.Image;
 import mint.core.Macros.*;
-import mint.types.Types;
 
 
 private typedef KhaMintProgressOptions = {
@@ -14,7 +10,7 @@ private typedef KhaMintProgressOptions = {
 	var color_bar: Null<Color>;
 }
 
-class Progress extends KhaRenderer{
+class Progress extends KhaRender{
 
 	public var progress : mint.Progress;
 
@@ -36,9 +32,9 @@ class Progress extends KhaRenderer{
 		color = def(opt.color, Color.fromValue(0x242424));
 		colorBar = def(opt.color_bar, Color.fromValue(0x9dca63));
 
-		visual = new Visual(control.x, control.y, control.w, control.h)
+		visual = new Visual(this.khaRendering.renderManager, control.x, control.y, control.w, control.h)
 					.color(color);
-		bar = new Visual(control.x+margin, control.y+margin, getBarWidth(progress.progress), control.h - (margin*2))
+		bar = new Visual(this.khaRendering.renderManager, control.x+margin, control.y+margin, getBarWidth(progress.progress), control.h - (margin*2))
 					.color(colorBar);
 
 		progress.onchange.listen(onprogresschange);
@@ -49,14 +45,15 @@ class Progress extends KhaRenderer{
 		super.ondestroy();
 	}
 
-	override function onrender(){
-		if(!control.visible) return;
-		var g : Graphics = khaRendering.frame.g2;
-		visual.draw(g);
-		bar.draw(g);
-		g.flush();
+	override function onvisible(visible : Bool){
+		visual.visible(visible);
+		bar.visible(visible);
 	}
-
+	
+	override function ondepth(d : Float){
+		visual.depth = d;
+		bar.depth = d + 0.0001;
+	}
 
 	function onprogresschange(cur, prev){
 		bar.size(getBarWidth(cur), control.h-(margin*2));

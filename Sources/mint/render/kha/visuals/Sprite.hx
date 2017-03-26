@@ -10,14 +10,14 @@ class Sprite extends Visual{
     var myTexture : Image;
     var uv : Vector4;
 
-    public function new(x : Float, y : Float, width : Float, height : Float) {
-        super(x,y,width,height);
+    public function new(manager : KhaMintRenderManager, x : Float, y : Float, width : Float, height : Float) {
+        super(manager, x,y,width,height);
         uv = new Vector4(0,0,1,1);
     }
 
     public function texture(tex : Image) : Sprite{
         if(myTexture != null)
-            ondestroy();
+            myTexture.unload();
         myTexture = tex;
         return this;
     }
@@ -28,10 +28,9 @@ class Sprite extends Visual{
     }
 
     override public function draw(g:Graphics) {
-        if(!myVisibility) return;
+        if(!myVisibility || myTexture == null) return;
         g.pushOpacity(myOpacity);
         g.color = myColor;
-        g.setBlendingMode(BlendingOperation.SourceAlpha, BlendingOperation.InverseSourceAlpha);
         if(doClip){
             g.scissor(Std.int(cx),Std.int(cy),Std.int(cw),Std.int(ch));
         }else{
@@ -43,7 +42,9 @@ class Sprite extends Visual{
     }
 
     public function ondestroy(){
-        myTexture.unload();
+        renderManager.removeVisual(this);
+        if(myTexture != null)
+            myTexture.unload();
     }
 
 

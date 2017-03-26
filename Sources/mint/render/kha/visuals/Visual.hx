@@ -13,6 +13,10 @@ class Visual {
 
 	static public var baseImage(default, null) : Image;
 
+	public var depth = 0.0;
+
+	var renderManager : KhaMintRenderManager;
+
 	//visual rectangle
 	var w : Float;
 	var h : Float;
@@ -37,7 +41,9 @@ class Visual {
 	public var myOpacity(default, null) : Float = -1.0;
 	var myVisibility = true;
 
-	public function new(x : Float, y : Float, width : Float, height : Float) {
+	public function new(manager : KhaMintRenderManager, x : Float, y : Float, width : Float, height : Float) {
+		this.renderManager = manager;
+		renderManager.addVisual(this);
 		this.x = x;
 		this.y = y;
 		w = width;
@@ -113,17 +119,13 @@ class Visual {
 			rw = w;
 			rh = h;
 		}
+
 	}
 
 	public function draw(g : Graphics){
-
 		if(!myVisibility) return;
-
 		g.pushOpacity(myOpacity);
 		g.color = myColor;
-		g.setBlendingMode(BlendingOperation.SourceAlpha, BlendingOperation.InverseSourceAlpha);
-		//need gl.enable(SCISSOR_TEST);
-		//g.setScissor(Std.int(cx),Std.int(cy),Std.int(cw),Std.int(ch));
 		g.drawScaledImage(baseImage,rx,ry,rw,rh);
 		g.popOpacity();
 	}

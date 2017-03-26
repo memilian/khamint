@@ -1,11 +1,8 @@
 package mint.render.kha;
 
 import mint.render.kha.visuals.Visual;
-import kha.graphics2.Graphics;
 import kha.Color;
-import kha.Image;
 import mint.core.Macros.*;
-import mint.types.Types;
 
 private typedef KhaMintButtonOptions = {
 	var color: Null<Color>;
@@ -13,11 +10,10 @@ private typedef KhaMintButtonOptions = {
 	var color_down: Null<Color>;
 }
 
-class Button extends KhaRenderer{
+class Button extends KhaRender{
 
 	public var visual : Visual;
 	public var button : mint.Button;
-	public var texture : kha.Image;
 
 	public var color : Color;
 	public var color_hover : Color;
@@ -34,7 +30,7 @@ class Button extends KhaRenderer{
 		color_down = def(opt.color_down, Color.fromValue(0xff444444));
 		color_hover = def(opt.color_hover, Color.fromValue(0xff445158));
 
-		visual = new Visual(control.x, control.y, control.w, control.h)
+		visual = new Visual(this.khaRendering.renderManager, control.x, control.y, control.w, control.h)
 			.color(color);
 
 		button.onmouseenter.listen(function(e,c) { visual.color(color_hover); });
@@ -43,13 +39,13 @@ class Button extends KhaRenderer{
 		button.onmouseup.listen(function(e,c) { visual.color(color_hover); });
 	}
 
-
-	override function onrender(){
-		if(!button.visible) return;
-		var g : Graphics = khaRendering.frame.g2;
-		visual.draw(g);
+	override function ondepth(d : Float){
+		visual.depth = d;
 	}
 
+	override function onvisible(visible : Bool){
+		visual.visible(visible);
+	}
 
 	override function onbounds(){
 		visual.size(control.w,control.h).pos(control.x,control.y);

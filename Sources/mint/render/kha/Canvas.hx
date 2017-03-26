@@ -1,18 +1,14 @@
 package mint.render.kha;
 
 import mint.render.kha.visuals.Visual;
-import kha.graphics4.BlendingOperation;
-import kha.graphics4.TextureFormat;
-import kha.graphics2.Graphics;
 import kha.Color;
-import kha.Image;
 import mint.core.Macros.*;
 
 private typedef KhaMintCanvasOptions = {
 	var color: Null<Color>;
 }
 
-class Canvas extends KhaRenderer{
+class Canvas extends KhaRender{
 
 	public var canvas : mint.Canvas;
 
@@ -28,15 +24,15 @@ class Canvas extends KhaRenderer{
 		var opt : KhaMintCanvasOptions = canvas.options.options;
 		color = def(opt.color, Color.fromBytes(0,0,0,0) );
 
-		visual = new Visual(control.x, control.y, control.w, control.h)
+		visual = new Visual(this.khaRendering.renderManager, control.x, control.y, control.w, control.h)
 				.color(color);
 	}
 
-	override function onrender(){
-		if(!canvas.visible) return;
-		var g : Graphics = khaRendering.frame.g2;
-		g.setBlendingMode(BlendingOperation.SourceAlpha, BlendingOperation.InverseSourceAlpha);
-		visual.draw(g);
-		g.flush();
+	override function ondepth(d : Float){
+		visual.depth = d;
+	}
+
+	override function onvisible(visible : Bool){
+		visual.visible(visible);
 	}
 }

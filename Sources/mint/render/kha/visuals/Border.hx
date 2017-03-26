@@ -12,13 +12,13 @@ class Border extends Visual{
 
 	var borderLength : Float;
 
-	public function new(innerX : Float, innerY : Float, innerW : Float, innerH : Float, borderLength : Float) {
+	public function new(manager : KhaMintRenderManager, innerX : Float, innerY : Float, innerW : Float, innerH : Float, borderLength : Float) {
 		this.innerX = innerX;
 		this.innerY = innerY;
 		this.innerW = innerW;
 		this.innerH = innerH;
 		this.borderLength = borderLength;
-		super(innerX-borderLength,innerY-borderLength,innerW+borderLength,innerH+borderLength);
+		super(manager, innerX-borderLength,innerY-borderLength,innerW+borderLength,innerH+borderLength);
 	}
 
 	public function inner(x : Float, y : Float, w : Float, h : Float) : Border{
@@ -53,7 +53,6 @@ class Border extends Visual{
 		}
 		g.pushOpacity(myOpacity);
 		g.color = myColor;
-		g.setBlendingMode(BlendingOperation.SourceAlpha, BlendingOperation.InverseSourceAlpha);
 		g.drawScaledImage(Visual.baseImage,rx,ry,rw,borderLength);
 		g.drawScaledImage(Visual.baseImage,rx,ry+rh,rw,borderLength);
 		g.drawScaledImage(Visual.baseImage,rx,ry+borderLength,borderLength,rh);
