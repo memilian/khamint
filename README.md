@@ -12,7 +12,6 @@ minimal setup :
 ```haxe
 package;
 
-import kha.graphics4.BlendingOperation;
 import kha.graphics2.Graphics;
 import kha.input.Keyboard;
 import kha.input.Mouse;
@@ -78,11 +77,9 @@ class Main {
 
     public function render(frame : Framebuffer):Void {
         var g : Graphics = frame.g2;
-        rendering.frame = frame; //pass the framebuffer to KhaMintRendering
 
         g.begin(true);
-        g.setBlendingMode(BlendingOperation.SourceAlpha , BlendingOperation.InverseSourceAlpha);
-        canvas.render();
+        rendering.renderManager.render(g);
         g.flush();
         g.end();
     }
