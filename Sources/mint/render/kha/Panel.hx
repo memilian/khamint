@@ -40,4 +40,9 @@ class Panel extends KhaRender{
 	override function onclip(disable : Bool, x : Float, y : Float, w : Float, h : Float){
 		visual.size(control.w,control.h).pos(control.x,control.y).clip(x,y,w,h);
 	}
+
+	override public function ondestroy() {
+		visual.destroy();
+		super.ondestroy();
+	}
 }

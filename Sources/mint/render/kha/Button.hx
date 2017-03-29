@@ -54,4 +54,8 @@ class Button extends KhaRender{
 	override function onclip(disable : Bool, x : Float, y : Float, w : Float, h : Float){
 		visual.size(control.w,control.h).pos(control.x,control.y).clip(x,y,w,h);
 	}
+
+	override function ondestroy(){
+		visual.destroy();
+	}
 }

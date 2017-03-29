@@ -57,4 +57,9 @@ class Dropdown extends KhaRender{
 		border.size(control.w+2,control.h+2).pos(control.x-1,control.y-1).clip(x,y,w,h);
 	}
 
+	override public function ondestroy(){
+		visual.destroy();
+		border.destroy();
+	}
+
 }

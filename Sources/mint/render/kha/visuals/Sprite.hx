@@ -41,11 +41,10 @@ class Sprite extends Visual{
         g.popOpacity();
     }
 
-    public function ondestroy(){
-        renderManager.removeVisual(this);
+    override public function destroy(){
+        super.destroy();
         if(myTexture != null)
             myTexture.unload();
     }
-
 
 }

@@ -60,6 +60,7 @@ class Label extends KhaRender{
 
 	override function ondestroy() {
 		label.onchange.remove(ontext);
+		text.destroy();
 		super.ondestroy();
 	}
 
@@ -85,4 +86,5 @@ class Label extends KhaRender{
 		text.pos(control.x, control.y)
 			.size(control.w, control.h);
 	}
+
 }

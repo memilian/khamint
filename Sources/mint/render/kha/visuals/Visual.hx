@@ -122,6 +122,10 @@ class Visual {
 
 	}
 
+	public function destroy(){
+		renderManager.removeVisual(this);
+	}
+
 	public function draw(g : Graphics){
 		if(!myVisibility) return;
 		g.pushOpacity(myOpacity);

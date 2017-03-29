@@ -67,7 +67,7 @@ class Image extends KhaRender{
 			newVisual.depth = visual.depth;
 			var tmp = visual;
 			visual = cast newVisual;
-			tmp.ondestroy();
+			tmp.destroy();
 
 
 			if(opt.uv != null)
@@ -102,8 +102,8 @@ class Image extends KhaRender{
 		.size(control.w, control.h);
 	}
 
-	override function ondestroy() {
-		visual.ondestroy();
+	override public function ondestroy() {
+		visual.destroy();
 		super.ondestroy();
 	}
 }

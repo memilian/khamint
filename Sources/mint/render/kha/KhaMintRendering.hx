@@ -20,7 +20,6 @@ class KhaMintRendering extends Rendering{
 		this.viewportWidth = viewportWidth;
 		this.viewportHeight = viewportHeight;
 		this.renderManager = new KhaMintRenderManager();
-
 	}
 
 	override public function get<T:Control, T1>( type:Class<T>, control:T ) : T1 {

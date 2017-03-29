@@ -49,6 +49,8 @@ class Slider extends KhaRender{
 
 	override function ondestroy(){
 		slider.onchange.remove(onchange);
+		visual.destroy();
+		bar.destroy();
 		super.ondestroy();
 	}
 

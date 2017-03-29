@@ -44,12 +44,12 @@ class Scroll extends KhaRender{
 		scroll.scrollv.ondepth.listen(function(d){
 			scrollv.depth = d;
 		});
+		scrollh.visible(false);
+		scrollv.visible(false);
 	}
 	
 	override function onvisible(visible : Bool){
 		visual.visible(visible);
-		scrollh.visible(visible);
-		scrollv.visible(visible);
 	}
 
 	override function ondepth(d : Float){
@@ -59,6 +59,9 @@ class Scroll extends KhaRender{
 	override function ondestroy(){
 		scroll.onchange.remove(onchange);
 		scroll.onhandlevis.remove(onhandlevis);
+		scrollh.destroy();
+		scrollv.destroy();
+		visual.destroy();
 		super.ondestroy();
 	}
 

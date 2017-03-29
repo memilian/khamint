@@ -121,6 +121,9 @@ class TextEdit extends KhaRender{
 		textedit.onmouseenter.remove(onmouseenter);
 		textedit.onmouseleave.remove(onmouseleave);
 		textedit.onchangeindex.remove(onchangeindex);
+		visual.destroy();
+		cursor.destroy();
+		border.destroy();
 		super.ondestroy();
 	}
 

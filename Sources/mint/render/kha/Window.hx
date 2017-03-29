@@ -98,7 +98,9 @@ class Window extends KhaRender{
 		window.collapse_handle.onmouseleave.listen(function(event, control){
 			collapse.color(color_collapse);
 		});
-
+		collapse.visible(window.collapsible ? true : false);
+		closeLine1.visible(window.closable ? true : false);
+		closeLine2.visible(window.closable ? true : false);
 	}
 
 	override function onbounds(){
@@ -115,14 +117,21 @@ class Window extends KhaRender{
 
 	override function ondestroy() {
 		window.oncollapse.remove(oncollapse);
+		visual.destroy();
+		border.destroy();
+		top.destroy();
+		collapse.destroy();
+		closeLine1.destroy();
+		closeLine2.destroy();
 		super.ondestroy();
 	}
 
 	override function ondepth(d : Float){
 		visual.depth = d;
 		border.depth = d + 0.0001;
-		collapse.depth = d + 0.0001;
-		closeLine1.depth = closeLine2.depth = d + 0.0001;
+		top.depth = d + 0.0001;
+		collapse.depth = d + 0.00015;
+		closeLine1.depth = closeLine2.depth = d + 0.00015;
 	}
 
 	override function onvisible(visible : Bool){

@@ -77,10 +77,9 @@ class Checkbox extends KhaRender{
 	}
 
 	override public function ondestroy(){
-		checkbox.onchange.remove(onchange);
-		checkbox.onmouseenter.remove(onmouseenter);
-		checkbox.onmouseleave.remove(onmouseleave);
-		super.ondestroy();
+		node.destroy();
+		nodeOff.destroy();
+		visual.destroy();
 	}
 
 	override function onclip(disable : Bool, x : Float, y : Float, w : Float, h : Float){
@@ -89,4 +88,12 @@ class Checkbox extends KhaRender{
 		visual.pos(checkbox.x, checkbox.y).clip(x,y,w,h);
 		super.onclip(disable,x,y,w,h);
 	}
+
+	override function onbounds(){
+		node.pos(checkbox.x+4, checkbox.y+4);
+		nodeOff.pos(checkbox.x+4, checkbox.y+4);
+		visual.pos(checkbox.x, checkbox.y);
+	}
+
+	
 }

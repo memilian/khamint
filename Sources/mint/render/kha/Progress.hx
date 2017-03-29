@@ -42,6 +42,8 @@ class Progress extends KhaRender{
 
 	public override function ondestroy() {
 		progress.onchange.remove(onprogresschange);
+		visual.destroy();
+		bar.destroy();
 		super.ondestroy();
 	}
 

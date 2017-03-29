@@ -35,4 +35,8 @@ class Canvas extends KhaRender{
 	override function onvisible(visible : Bool){
 		visual.visible(visible);
 	}
+
+	override function ondestroy(){
+		visual.destroy();
+	}
 }
