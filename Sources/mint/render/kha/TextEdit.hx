@@ -7,9 +7,9 @@ import kha.Color;
 import mint.core.Macros.*;
 
 private typedef KhaMintTextEditOptions = {
-	var color: Color;
-	var color_hover: Color;
-	var color_cursor: Color;
+	var color: Null<Color>;
+	var color_hover: Null<Color>;
+	var color_cursor: Null<Color>;
     @:optional var cursor_blink_rate: Float;
 }
 
@@ -44,7 +44,7 @@ class TextEdit extends KhaRender{
 					.color(colorCursor)
 					.visible(false);
         border = cast new Border(this.khaRendering.renderManager, textedit.x,textedit.y, textedit.w, textedit.h, 1)
-                    .color(colorCursor);
+					.color(colorCursor).visible(false);
 
 		textedit.onmouseenter.listen(onmouseenter);
 		textedit.onmouseleave.listen(onmouseleave);
@@ -129,7 +129,8 @@ class TextEdit extends KhaRender{
 
 	override function onvisible(visible : Bool){
 		visual.visible(visible);
-		border.visible(visible);
+		if(control.isfocused)
+			border.visible(visible);
 		if(!visible){
 			stopCursor();
 		}else if(visible && textedit.isfocused){

@@ -39,7 +39,7 @@ class Slider extends KhaRender{
 
 	override function ondepth(d : Float){
 		visual.depth = d;
-		bar.depth = d + 0.0001;
+		bar.depth = d + 0.01;
 	}
 
 	override function onvisible(visible : Bool){
@@ -71,7 +71,7 @@ class Slider extends KhaRender{
 			.pos(control.x,control.y)
 			.clip(x,y,w,h);
 		bar.size(slider.bar_w,slider.bar_h)
-			.pos(slider.bar_x,slider.bar_y)
+			.pos(control.x + slider.bar_x,control.y + slider.bar_y)
 			.clip(x,y,w,h);
 	}
 }

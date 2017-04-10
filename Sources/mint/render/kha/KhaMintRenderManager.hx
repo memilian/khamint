@@ -13,7 +13,6 @@ class KhaMintRenderManager{
 
 	public function addVisual(v : Visual){
 		visuals.push(v);
-		 
 	}
 
 	inline function depthSort(va : Visual, vb : Visual){

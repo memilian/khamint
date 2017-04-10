@@ -7,8 +7,6 @@ import mint.types.Types;
 
 class KhaMintAdapter {
 
-	public var scrollSpeed = 5;
-
 	var modState : mint.types.ModState;
 	var prevMouseX = 0;
 	var prevMouseY = 0;
@@ -34,62 +32,6 @@ class KhaMintAdapter {
 		};
 
 	}
-
-
-
-	/** from luxe.Input.Key to mint.KeyCode */
-/*	public static function key_code( _keycode:Int ) : mint.types.KeyCode {
-
-		return switch(_keycode) {
-
-			case Key.left:      mint.types.KeyCode.left;
-			case Key.right:     mint.types.KeyCode.right;
-			case Key.up:        mint.types.KeyCode.up;
-			case Key.down:      mint.types.KeyCode.down;
-			case Key.backspace: mint.types.KeyCode.backspace;
-			case Key.delete:    mint.types.KeyCode.delete;
-			case Key.tab:       mint.types.KeyCode.tab;
-			case Key.enter:     mint.types.KeyCode.enter;
-			case _:             mint.types.KeyCode.unknown;
-
-		} //_keycode
-
-	} //key_code
-*/
-/*	public static function text_event_type( _type:TextEventType ) : mint.types.TextEventType {
-
-		return switch(_type) {
-			case luxe.TextEventType.unknown: mint.types.TextEventType.unknown;
-			case luxe.TextEventType.edit:    mint.types.TextEventType.edit;
-			case luxe.TextEventType.input:   mint.types.TextEventType.input;
-		}
-
-	} //text_event_type
-*/
-	/** from luxe.Input.ModState to mint.ModState */
-/*	public static function mod_state( _mod:ModState ) : mint.types.ModState {
-
-		return {
-			none:   _mod.none,
-			lshift: _mod.lshift,
-			rshift: _mod.rshift,
-			lctrl:  _mod.lctrl,
-			rctrl:  _mod.rctrl,
-			lalt:   _mod.lalt,
-			ralt:   _mod.ralt,
-			lmeta:  _mod.lmeta,
-			rmeta:  _mod.rmeta,
-			num:    _mod.num,
-			caps:   _mod.caps,
-			mode:   _mod.mode,
-			ctrl:   _mod.ctrl,
-			shift:  _mod.shift,
-			alt:    _mod.alt,
-			meta:   _mod.meta
-		};
-
-	} //mod_state
-*/
 
 	function keyCode(k : Key, c : String) : Int{
 		var keycode = switch(k){
@@ -236,7 +178,7 @@ class KhaMintAdapter {
 			button      : mint.types.MouseButton.none,
 			timestamp   : Timer.stamp(),
 			x           : 0,
-			y           : w<0?-scrollSpeed:scrollSpeed,
+			y           : w<0?-1:1,
 			xrel        : 0,
 			yrel        : 0,
 			bubble      : true

@@ -106,7 +106,6 @@ class Visual {
 		refreshClip();
 	}
 
-
 	function refreshClip(){
 		if(doClip){
 			rx = Math.min(Math.max(cx, x), cx+cw);

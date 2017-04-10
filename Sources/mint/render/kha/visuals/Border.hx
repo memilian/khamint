@@ -1,6 +1,5 @@
 package mint.render.kha.visuals;
 
-import kha.graphics4.BlendingOperation;
 import kha.graphics2.Graphics;
 
 class Border extends Visual{
